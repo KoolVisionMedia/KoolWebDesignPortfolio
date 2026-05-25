@@ -32,7 +32,7 @@ assets/         — Logo, images (add your files here)
 ## Assets Needed
 
 Drop these into the `assets/` folder:
-- `logo.png` — Kool Vision Marketing logo
+- `logo.svg` — Kool Vision Marketing logo (SVG text-based placeholder included)
 - `workspace.jpg` — Design workspace photo (for "Design Process" section)
 - Portfolio screenshots for the grid
 
