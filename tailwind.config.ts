@@ -10,41 +10,39 @@ export default {
   theme: {
     extend: {
       colors: {
-        // Brand tokens (hex — keeps Index.tsx classes like bg-primary, text-primary working)
+        background: 'hsl(var(--background))',
+        foreground: 'hsl(var(--foreground))',
         primary: {
-          DEFAULT: '#43CED6',
-          foreground: '#ffffff',
-        },
-        foreground: '#22222A',
-        background: '#ffffff',
-        // shadcn/ui aliases pointing to same values
-        border: '#e5e7eb',
-        input: '#e5e7eb',
-        ring: '#43CED6',
-        card: {
-          DEFAULT: '#ffffff',
-          foreground: '#22222A',
+          DEFAULT: 'hsl(var(--primary))',
+          foreground: 'hsl(var(--primary-foreground))',
         },
         secondary: {
-          DEFAULT: '#f3f4f6',
-          foreground: '#22222A',
+          DEFAULT: 'hsl(var(--secondary))',
+          foreground: 'hsl(var(--secondary-foreground))',
         },
         muted: {
-          DEFAULT: '#f3f4f6',
-          foreground: '#6b7280',
+          DEFAULT: 'hsl(var(--muted))',
+          foreground: 'hsl(var(--muted-foreground))',
         },
         accent: {
-          DEFAULT: '#f3f4f6',
-          foreground: '#22222A',
+          DEFAULT: 'hsl(var(--accent))',
+          foreground: 'hsl(var(--accent-foreground))',
         },
         destructive: {
-          DEFAULT: '#ef4444',
-          foreground: '#ffffff',
+          DEFAULT: 'hsl(var(--destructive))',
+          foreground: 'hsl(var(--destructive-foreground))',
+        },
+        card: {
+          DEFAULT: 'hsl(var(--card))',
+          foreground: 'hsl(var(--card-foreground))',
         },
         popover: {
-          DEFAULT: '#ffffff',
-          foreground: '#22222A',
+          DEFAULT: 'hsl(var(--popover))',
+          foreground: 'hsl(var(--popover-foreground))',
         },
+        border: 'hsl(var(--border))',
+        input: 'hsl(var(--input))',
+        ring: 'hsl(var(--ring))',
       },
       fontFamily: {
         sans: ['Inter', 'system-ui', 'sans-serif'],
