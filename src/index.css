@@ -6,65 +6,46 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 240 10% 15%;
+    /* Warm cream base */
+    --background: 36 60% 98%;
+    --foreground: 240 10% 13%;
 
-    --card: 0 0% 100%;
-    --card-foreground: 240 10% 15%;
+    --card: 36 50% 99%;
+    --card-foreground: 240 10% 13%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 240 10% 15%;
+    --popover: 36 50% 99%;
+    --popover-foreground: 240 10% 13%;
 
+    /* Brand teal — kept as primary */
     --primary: 183 64% 55%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 240 5% 96%;
-    --secondary-foreground: 240 10% 15%;
+    --secondary: 36 40% 94%;
+    --secondary-foreground: 240 10% 13%;
 
-    --muted: 240 5% 96%;
+    --muted: 36 30% 94%;
     --muted-foreground: 240 5% 45%;
 
-    --accent: 240 5% 96%;
-    --accent-foreground: 240 10% 15%;
+    --accent: 36 30% 94%;
+    --accent-foreground: 240 10% 13%;
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
 
-    --border: 240 6% 90%;
-    --input: 240 6% 90%;
+    /* Warm amber border */
+    --border: 36 30% 88%;
+    --input: 36 30% 88%;
     --ring: 183 64% 55%;
 
     --radius: 0.5rem;
-  }
 
-  .dark {
-    --background: 240 10% 15%;
-    --foreground: 0 0% 98%;
-
-    --card: 240 10% 15%;
-    --card-foreground: 0 0% 98%;
-
-    --popover: 240 10% 15%;
-    --popover-foreground: 0 0% 98%;
-
-    --primary: 183 64% 55%;
-    --primary-foreground: 0 0% 100%;
-
-    --secondary: 240 5% 26%;
-    --secondary-foreground: 0 0% 98%;
-
-    --muted: 240 5% 26%;
-    --muted-foreground: 240 5% 65%;
-
-    --accent: 240 5% 26%;
-    --accent-foreground: 0 0% 98%;
-
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 0 0% 98%;
-
-    --border: 240 5% 26%;
-    --input: 240 5% 26%;
-    --ring: 183 64% 55%;
+    /* Luxury palette */
+    --gold: 38 68% 58%;
+    --gold-dark: 38 62% 45%;
+    --gold-light: 38 80% 73%;
+    --blush: 14 55% 74%;
+    --cream: 36 60% 98%;
+    --cream-deep: 36 45% 95%;
   }
 }
 
@@ -101,38 +82,70 @@
   }
 }
 
-.hero-gradient {
-  background: linear-gradient(180deg, #f8f8fc 0%, #ffffff 100%);
+/* ── Gradient text ─────────────────────────────── */
+.text-gradient {
+  background: linear-gradient(135deg, #C9922A 0%, #43CED6 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
-.section-gray {
-  background-color: #f9f9fb;
+.text-gradient-gold {
+  background: linear-gradient(135deg, #F0C878 0%, #D4A853 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
-@keyframes float {
-  0% { transform: translateY(0px); }
-  50% { transform: translateY(-15px); }
-  100% { transform: translateY(0px); }
+/* ── Frosted glass ─────────────────────────────── */
+.glass-nav {
+  background: rgba(254, 250, 245, 0.82);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border-bottom: 1px solid rgba(212, 168, 83, 0.18);
 }
 
-@keyframes float-reverse {
-  0% { transform: translateY(0px); }
-  50% { transform: translateY(15px); }
-  100% { transform: translateY(0px); }
+.glass-card {
+  background: rgba(255, 252, 248, 0.72);
+  backdrop-filter: blur(14px) saturate(160%);
+  -webkit-backdrop-filter: blur(14px) saturate(160%);
+  border: 1px solid rgba(212, 168, 83, 0.22);
+  box-shadow:
+    0 4px 28px rgba(180, 130, 40, 0.09),
+    0 1px 4px rgba(0, 0, 0, 0.04);
 }
 
-.animate-float {
-  animation: float 6s ease-in-out infinite;
+/* ── Luxury buttons ────────────────────────────── */
+.btn-luxury {
+  background: linear-gradient(135deg, #D4A853 0%, #43CED6 100%) !important;
+  border: none !important;
+  color: white !important;
+  transition: opacity 0.2s, box-shadow 0.2s !important;
+}
+.btn-luxury:hover {
+  opacity: 0.92;
+  box-shadow: 0 4px 22px rgba(212, 168, 83, 0.40) !important;
 }
 
-.animate-float-reverse {
-  animation: float-reverse 7s ease-in-out infinite;
-}
+/* ── Section backgrounds ───────────────────────── */
+.bg-cream { background-color: #FEFAF5; }
+.bg-cream-deep { background-color: #FAF4EA; }
 
-.no-scrollbar::-webkit-scrollbar {
-  display: none;
-}
+/* ── Scrollbar ─────────────────────────────────── */
+.no-scrollbar::-webkit-scrollbar { display: none; }
 .no-scrollbar {
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
+
+/* ── Float animations ──────────────────────────── */
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-15px); }
+}
+@keyframes float-reverse {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(15px); }
+}
+.animate-float         { animation: float 6s ease-in-out infinite; }
+.animate-float-reverse { animation: float-reverse 7s ease-in-out infinite; }

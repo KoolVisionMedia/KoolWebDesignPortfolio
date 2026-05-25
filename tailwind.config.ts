@@ -10,6 +10,7 @@ export default {
   theme: {
     extend: {
       colors: {
+        /* shadcn/ui CSS-variable colours */
         background: 'hsl(var(--background))',
         foreground: 'hsl(var(--foreground))',
         primary: {
@@ -41,8 +42,27 @@ export default {
           foreground: 'hsl(var(--popover-foreground))',
         },
         border: 'hsl(var(--border))',
-        input: 'hsl(var(--input))',
-        ring: 'hsl(var(--ring))',
+        input:  'hsl(var(--input))',
+        ring:   'hsl(var(--ring))',
+
+        /* Luxury palette */
+        gold: {
+          DEFAULT: '#D4A853',
+          light:   '#F0C878',
+          dark:    '#B8892E',
+          50:      '#FEF9EC',
+          100:     '#FDF0CA',
+        },
+        blush: {
+          DEFAULT: '#E8A898',
+          light:   '#F4D5C8',
+          dark:    '#D47868',
+        },
+        cream: {
+          DEFAULT: '#FEFAF5',
+          deep:    '#FAF4EA',
+          warm:    '#F4EBD9',
+        },
       },
       fontFamily: {
         sans: ['Inter', 'system-ui', 'sans-serif'],
@@ -55,16 +75,16 @@ export default {
       keyframes: {
         'accordion-down': {
           from: { height: '0' },
-          to: { height: 'var(--radix-accordion-content-height)' },
+          to:   { height: 'var(--radix-accordion-content-height)' },
         },
         'accordion-up': {
           from: { height: 'var(--radix-accordion-content-height)' },
-          to: { height: '0' },
+          to:   { height: '0' },
         },
       },
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
-        'accordion-up': 'accordion-up 0.2s ease-out',
+        'accordion-up':   'accordion-up 0.2s ease-out',
       },
     },
   },

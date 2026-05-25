@@ -20,12 +20,23 @@ function useIsMobile(breakpoint = 768) {
   return isMobile;
 }
 
+/* ── Orb decorator ──────────────────────────────── */
+const Orb = ({
+  color, size, className,
+}: { color: string; size: string; className: string }) => (
+  <div
+    className={`absolute rounded-full blur-3xl pointer-events-none ${className}`}
+    style={{ width: size, height: size, background: color }}
+  />
+);
+
+/* ── Navbar ─────────────────────────────────────── */
 const Navbar = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const close = () => setMobileOpen(false);
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-md border-b border-gray-100">
+    <nav className="glass-nav fixed top-0 left-0 right-0 z-50">
       <div className="max-w-[1400px] mx-auto px-4 sm:px-6 h-16 sm:h-20 flex items-center justify-between">
         <div className="flex items-center gap-8 xl:gap-12">
           <a href="/" className="flex items-center group py-2 shrink-0">
@@ -35,7 +46,7 @@ const Navbar = () => {
               className="h-12 sm:h-16 group-hover:scale-105 transition-transform object-contain"
             />
           </a>
-          <div className="hidden md:flex items-center gap-6 lg:gap-8 text-[14px] lg:text-[15px] font-semibold text-foreground/80">
+          <div className="hidden md:flex items-center gap-6 lg:gap-8 text-[14px] lg:text-[15px] font-semibold text-foreground/75">
             <a href="#" className="text-primary border-b-2 border-primary py-6 sm:py-7">Home</a>
             <a href="#" className="hover:text-primary transition-colors py-6 sm:py-7">Services</a>
             <a href="#" className="hover:text-primary transition-colors py-6 sm:py-7">Portfolio</a>
@@ -44,14 +55,19 @@ const Navbar = () => {
         </div>
 
         <div className="flex items-center gap-3">
-          <Button variant="outline" className="hidden md:flex font-bold border-gray-200 text-primary hover:bg-gray-50 h-10 px-4 lg:px-6">
+          <Button
+            variant="outline"
+            className="hidden md:flex font-bold border-gold/40 text-primary hover:bg-gold-50 h-10 px-4 lg:px-6"
+          >
             Client Portal
           </Button>
-          <Button className="hidden md:flex font-bold bg-primary hover:bg-primary/90 text-primary-foreground rounded-md px-4 lg:px-6 h-10 text-sm">
+          <Button
+            className="hidden md:flex font-bold rounded-md px-4 lg:px-6 h-10 text-sm btn-luxury"
+          >
             Start a Project
           </Button>
           <button
-            className="md:hidden p-2 rounded-lg hover:bg-gray-100 transition-colors"
+            className="md:hidden p-2 rounded-lg hover:bg-gold-50 transition-colors"
             onClick={() => setMobileOpen((o) => !o)}
             aria-label="Toggle navigation menu"
             aria-expanded={mobileOpen}
@@ -65,19 +81,18 @@ const Navbar = () => {
         <motion.div
           initial={{ opacity: 0, y: -8 }}
           animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -8 }}
           transition={{ duration: 0.15 }}
-          className="md:hidden bg-white border-t border-gray-100 shadow-lg"
+          className="md:hidden bg-cream border-t border-gold/15 shadow-lg"
         >
           <div className="px-4 py-5 flex flex-col gap-1">
-            <a onClick={close} href="#" className="text-primary font-semibold text-base py-3 px-3 rounded-lg bg-primary/5">Home</a>
-            <a onClick={close} href="#" className="text-foreground/80 font-semibold text-base py-3 px-3 rounded-lg hover:bg-gray-50 transition-colors">Services</a>
-            <a onClick={close} href="#" className="text-foreground/80 font-semibold text-base py-3 px-3 rounded-lg hover:bg-gray-50 transition-colors">Portfolio</a>
-            <a onClick={close} href="#" className="text-foreground/80 font-semibold text-base py-3 px-3 rounded-lg hover:bg-gray-50 transition-colors">Contact</a>
+            <a onClick={close} href="#" className="text-primary font-semibold text-base py-3 px-3 rounded-lg bg-gold-50">Home</a>
+            <a onClick={close} href="#" className="text-foreground/75 font-semibold text-base py-3 px-3 rounded-lg hover:bg-gold-50 transition-colors">Services</a>
+            <a onClick={close} href="#" className="text-foreground/75 font-semibold text-base py-3 px-3 rounded-lg hover:bg-gold-50 transition-colors">Portfolio</a>
+            <a onClick={close} href="#" className="text-foreground/75 font-semibold text-base py-3 px-3 rounded-lg hover:bg-gold-50 transition-colors">Contact</a>
           </div>
           <div className="px-4 pb-5 flex flex-col gap-2">
-            <Button variant="outline" className="w-full font-bold border-gray-200 text-primary hover:bg-gray-50 h-11">Client Portal</Button>
-            <Button className="w-full font-bold bg-primary hover:bg-primary/90 text-primary-foreground rounded-md h-11">Start a Project</Button>
+            <Button variant="outline" className="w-full font-bold border-gold/40 text-primary hover:bg-gold-50 h-11">Client Portal</Button>
+            <Button className="w-full font-bold rounded-md h-11 btn-luxury">Start a Project</Button>
           </div>
         </motion.div>
       )}
@@ -85,6 +100,7 @@ const Navbar = () => {
   );
 };
 
+/* ── Hero ───────────────────────────────────────── */
 const Hero = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const isMobile = useIsMobile();
@@ -98,16 +114,26 @@ const Hero = () => {
   const scaleMax = isMobile ? 1.35 : 2.5;
   const scale = useTransform(smoothProgress, [0, 0.6], [scaleMax, 1]);
 
-  return (
-    <section ref={containerRef} className="relative bg-[#f9f9fb]" style={{ height: isMobile ? "220vh" : "350vh" }}>
-      <div className="sticky top-0 h-screen w-full overflow-hidden flex items-center justify-center pt-16 sm:pt-20">
+  const heroBg = `
+    radial-gradient(ellipse 900px 700px at 5% 65%, rgba(212,168,83,0.18) 0%, transparent 60%),
+    radial-gradient(ellipse 700px 600px at 95% 15%, rgba(67,206,214,0.14) 0%, transparent 60%),
+    radial-gradient(ellipse 500px 400px at 55% 92%, rgba(232,168,152,0.10) 0%, transparent 55%),
+    linear-gradient(160deg, #FFF9F0 0%, #FEFCF8 42%, #F2FAFB 100%)
+  `;
 
+  return (
+    <section
+      ref={containerRef}
+      className="relative"
+      style={{ height: isMobile ? "220vh" : "350vh", background: heroBg }}
+    >
+      <div className="sticky top-0 h-screen w-full overflow-hidden flex items-center justify-center pt-16 sm:pt-20">
         <motion.div
-          style={{ scale }}
-          className="relative w-[95vw] max-w-[1200px] h-[72vh] max-h-[750px] shrink-0 flex flex-col rounded-xl shadow-2xl overflow-hidden border border-gray-200 bg-white origin-center lg:origin-[55%_53.7333%]"
+          style={{ scale, boxShadow: '0 24px 80px rgba(180,130,40,0.14), 0 4px 16px rgba(0,0,0,0.06)' }}
+          className="relative w-[95vw] max-w-[1200px] h-[72vh] max-h-[750px] shrink-0 flex flex-col rounded-2xl overflow-hidden border border-gold/20 bg-white origin-center lg:origin-[55%_53.7333%]"
         >
           {/* Top Bar */}
-          <div className="h-12 sm:h-14 bg-white border-b border-gray-200 flex items-center justify-between px-3 sm:px-4 shrink-0 z-10 overflow-x-auto no-scrollbar">
+          <div className="h-12 sm:h-14 bg-white border-b border-gold/15 flex items-center justify-between px-3 sm:px-4 shrink-0 z-10 overflow-x-auto no-scrollbar">
             <div className="flex items-center min-w-max">
               <div className="flex gap-1.5 mr-3 sm:mr-6">
                 <div className="w-3 h-3 rounded-full bg-[#ff5f56]" />
@@ -120,13 +146,13 @@ const Hero = () => {
                   Project: Redesign <ChevronDown className="w-3 h-3" />
                 </div>
                 <X className="w-4 h-4 hidden sm:block" />
-                <div className="hidden sm:block w-[1px] h-4 bg-gray-300 mx-1" />
+                <div className="hidden sm:block w-[1px] h-4 bg-gray-200 mx-1" />
                 <span className="hidden md:inline text-[13px] text-gray-400">Client Review - V1</span>
                 <Plus className="w-4 h-4 text-gray-400 hidden sm:block" />
               </div>
             </div>
 
-            <div className="hidden lg:flex items-center gap-5 text-gray-500 mx-4">
+            <div className="hidden lg:flex items-center gap-5 text-gray-400 mx-4">
               <Type className="w-4 h-4" />
               <ImageIcon className="w-4 h-4" />
               <BarChart2 className="w-4 h-4" />
@@ -150,12 +176,12 @@ const Hero = () => {
             </div>
           </div>
 
-          {/* Main Editor Body */}
+          {/* Editor Body */}
           <div className="flex-1 flex overflow-hidden">
 
             {/* Left Sidebar */}
-            <div className="hidden lg:flex w-[200px] xl:w-[240px] bg-[#f9fafb] border-r border-gray-200 flex-col shrink-0">
-              <div className="p-4 flex justify-between items-center border-b border-gray-200">
+            <div className="hidden lg:flex w-[200px] xl:w-[240px] border-r border-gold/12 flex-col shrink-0" style={{ background: '#FEF9F3' }}>
+              <div className="p-4 flex justify-between items-center border-b border-gold/12">
                 <span className="text-[13px] font-bold text-gray-800 flex items-center gap-1">Project: Redesign <ChevronDown className="w-3 h-3" /></span>
                 <span className="text-[11px] text-gray-500">Wireframes</span>
               </div>
@@ -188,19 +214,21 @@ const Hero = () => {
                     </div>
                   </div>
                 </div>
-                <button className="mt-6 w-full py-3 border border-dashed border-gray-300 rounded-lg flex flex-col items-center justify-center text-primary bg-white gap-1 hover:bg-gray-50 transition-colors">
+                <button className="mt-6 w-full py-3 border border-dashed border-gold/30 rounded-lg flex flex-col items-center justify-center text-primary bg-white gap-1 hover:bg-gold-50 transition-colors">
                   <Plus className="w-4 h-4" />
                   <span className="text-[12px] font-medium">Add slide</span>
                 </button>
               </div>
             </div>
 
-            {/* Center Canvas Area */}
-            <div className="flex-1 bg-[#f0f1f3] flex items-center justify-center overflow-hidden relative">
+            {/* Canvas */}
+            <div
+              className="flex-1 flex items-center justify-center overflow-hidden relative"
+              style={{ background: 'linear-gradient(135deg, #EEE9E0 0%, #E8E3DA 100%)' }}
+            >
               <div className="w-full max-w-[840px] aspect-[16/9] bg-white shadow-sm relative overflow-hidden flex flex-col items-center justify-center text-center p-4">
-
                 <div className="relative z-10">
-                  <h2 className="text-[24px] sm:text-[36px] md:text-[52px] font-black tracking-tighter text-primary leading-[1.05] mb-3 md:mb-6">
+                  <h2 className="text-[22px] sm:text-[34px] md:text-[50px] font-black tracking-tighter leading-[1.05] mb-3 md:mb-6 text-gradient">
                     Websites<br />That Drive<br />Results.
                   </h2>
                   <p className="text-[11px] sm:text-[13px] md:text-[14px] text-gray-500 max-w-[280px] sm:max-w-[320px] mx-auto leading-relaxed">
@@ -230,9 +258,9 @@ const Hero = () => {
             </div>
 
             {/* Right Sidebar */}
-            <div className="hidden md:flex w-[56px] lg:w-[64px] bg-[#f9fafb] border-l border-gray-200 flex-col items-center py-6 shrink-0 justify-between">
+            <div className="hidden md:flex w-[56px] lg:w-[64px] border-l border-gold/12 flex-col items-center py-6 shrink-0 justify-between" style={{ background: '#FEF9F3' }}>
               <div className="flex flex-col gap-5 lg:gap-6 w-full items-center">
-                <div className="flex flex-col items-center gap-1 cursor-pointer text-gray-400 hover:text-gray-800">
+                <div className="flex flex-col items-center gap-1 cursor-pointer text-gray-400 hover:text-gray-700">
                   <Droplet className="w-5 h-5" />
                   <span className="text-[9px] font-medium">Design</span>
                 </div>
@@ -242,16 +270,16 @@ const Hero = () => {
                   <span className="text-[9px] font-medium mt-3">Workflow</span>
                   <div className="absolute top-[-4px] right-1 bg-primary text-white text-[8px] w-3 h-3 rounded-full flex items-center justify-center">3</div>
                 </div>
-                <div className="flex flex-col items-center gap-1 cursor-pointer text-gray-400 hover:text-gray-800 mt-2">
+                <div className="flex flex-col items-center gap-1 cursor-pointer text-gray-400 hover:text-gray-700 mt-2">
                   <MessageSquare className="w-5 h-5" />
                   <span className="text-[9px] font-medium">Comment</span>
                 </div>
-                <div className="flex flex-col items-center gap-1 cursor-pointer text-gray-400 hover:text-gray-800">
+                <div className="flex flex-col items-center gap-1 cursor-pointer text-gray-400 hover:text-gray-700">
                   <Smile className="w-5 h-5" />
                   <span className="text-[9px] font-medium">Reaction</span>
                 </div>
               </div>
-              <div className="w-6 h-6 rounded-full border border-gray-300 flex items-center justify-center text-gray-400 cursor-pointer hover:text-gray-800 hover:border-gray-800">
+              <div className="w-6 h-6 rounded-full border border-gold/30 flex items-center justify-center text-gray-400 cursor-pointer hover:text-gray-700 hover:border-gold">
                 <HelpCircle className="w-4 h-4" />
               </div>
             </div>
@@ -263,36 +291,54 @@ const Hero = () => {
   );
 };
 
+/* ── EarlyAccess ────────────────────────────────── */
 const EarlyAccess = () => {
   return (
-    <section className="py-16 sm:py-24 bg-white text-center px-4">
-      <h2 className="text-2xl sm:text-3xl font-bold mb-6 sm:mb-8 text-foreground">Get free marketing insights and web design tips.</h2>
-      <form className="flex flex-col sm:flex-row justify-center gap-2 max-w-md mx-auto w-full" onSubmit={e => e.preventDefault()}>
-        <Input type="email" placeholder="Your email" className="h-12 w-full sm:w-64 bg-gray-50/50 border-gray-200" required />
-        <Button type="submit" className="h-12 px-8 bg-primary hover:bg-primary/90 text-primary-foreground font-bold shrink-0">Subscribe</Button>
-      </form>
+    <section
+      className="py-16 sm:py-24 text-center px-4 relative overflow-hidden"
+      style={{ background: 'linear-gradient(180deg, #FAF5EE 0%, #FEF9F4 100%)' }}
+    >
+      <Orb color="rgba(212,168,83,0.10)" size="400px" className="-top-20 left-1/4 -translate-x-1/2" />
+      <Orb color="rgba(67,206,214,0.08)" size="300px" className="-bottom-10 right-1/4 translate-x-1/2" />
+      <div className="relative z-10">
+        <h2 className="text-2xl sm:text-3xl font-bold mb-6 sm:mb-8 text-foreground">
+          Get free marketing insights and web design tips.
+        </h2>
+        <form className="flex flex-col sm:flex-row justify-center gap-2 max-w-md mx-auto w-full" onSubmit={e => e.preventDefault()}>
+          <Input
+            type="email"
+            placeholder="Your email"
+            className="h-12 w-full sm:w-64 border-gold/30 bg-white/70 focus-visible:ring-primary"
+            required
+          />
+          <Button type="submit" className="h-12 px-8 font-bold shrink-0 btn-luxury">
+            Subscribe
+          </Button>
+        </form>
+      </div>
     </section>
   );
 };
 
+/* ── Logos ──────────────────────────────────────── */
 const Logos = () => {
   const logos = [
     { icon: Building2, name: "TN Real Estate" },
-    { icon: Coffee, name: "Nashville Cafe" },
-    { icon: Store, name: "Local Boutique" },
-    { icon: Utensils, name: "Franklin Dining" },
+    { icon: Coffee,    name: "Nashville Cafe" },
+    { icon: Store,     name: "Local Boutique" },
+    { icon: Utensils,  name: "Franklin Dining" },
     { icon: Briefcase, name: "Middle TN Law" },
   ];
 
   return (
-    <section className="py-16 sm:py-20 bg-[#f9f9fb] border-t border-gray-100">
+    <section className="py-16 sm:py-20 border-t border-gold/15" style={{ background: '#FAF4EA' }}>
       <div className="max-w-[1400px] mx-auto px-4 sm:px-6 text-center">
         <h5 className="text-xs font-bold tracking-widest text-foreground/40 uppercase mb-8 sm:mb-12">
           Trusted by Middle Tennessee businesses
         </h5>
         <div className="flex flex-wrap justify-center items-center gap-6 sm:gap-10 md:gap-16 lg:gap-20">
           {logos.map((Logo, i) => (
-            <div key={i} className="flex items-center gap-2 sm:gap-3 opacity-60 hover:opacity-100 transition-opacity grayscale hover:grayscale-0">
+            <div key={i} className="flex items-center gap-2 sm:gap-3 opacity-50 hover:opacity-100 transition-all grayscale hover:grayscale-0 hover:text-gold">
               <Logo.icon className="w-6 h-6 sm:w-8 sm:h-8 shrink-0" />
               <span className="font-bold text-base sm:text-lg tracking-tight">{Logo.name}</span>
             </div>
@@ -303,10 +349,14 @@ const Logos = () => {
   );
 };
 
+/* ── Workflow ───────────────────────────────────── */
 const Workflow = () => {
   return (
-    <section className="py-20 sm:py-32 bg-white overflow-hidden">
-      <div className="max-w-[1400px] mx-auto px-4 sm:px-6">
+    <section className="py-20 sm:py-32 overflow-hidden relative" style={{ background: '#FEFAF5' }}>
+      <Orb color="rgba(212,168,83,0.12)" size="600px" className="top-1/2 -left-40 -translate-y-1/2" />
+      <Orb color="rgba(67,206,214,0.08)" size="400px" className="top-10 right-0" />
+
+      <div className="max-w-[1400px] mx-auto px-4 sm:px-6 relative z-10">
         <div className="grid md:grid-cols-2 gap-10 sm:gap-16 md:gap-20 items-center">
           <motion.div
             initial={{ opacity: 0, x: -20 }}
@@ -315,8 +365,9 @@ const Workflow = () => {
             transition={{ duration: 0.6 }}
             className="max-w-lg"
           >
-            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black tracking-tighter text-foreground mb-5 md:mb-8 leading-[1.1]">
-              A design process that just works.
+            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black tracking-tighter mb-5 md:mb-8 leading-[1.1]">
+              <span className="text-gradient">A design process</span>
+              <span className="text-foreground"> that just works.</span>
             </h2>
             <p className="text-base sm:text-lg md:text-xl text-foreground/60 leading-relaxed font-medium">
               We handle the technical heavy lifting so you can focus on your business. From wireframes to final launch, our collaborative process keeps you in the loop without overwhelming you.
@@ -329,10 +380,12 @@ const Workflow = () => {
             transition={{ duration: 0.6 }}
             className="relative"
           >
+            <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-gold/20 to-primary/10 blur-xl -z-10 translate-y-4 scale-95" />
             <img
               src="https://vibe.filesafe.space/1779696263388944422/assets/cd778dd6-9872-4b82-b8d7-2a294c818b5f.png"
               alt="Workflow Workspace"
-              className="w-full rounded-2xl shadow-[0_20px_50px_rgb(0,0,0,0.1)] border border-gray-100 object-cover aspect-[4/3]"
+              className="w-full rounded-2xl border border-gold/15 object-cover aspect-[4/3]"
+              style={{ boxShadow: '0 20px 60px rgba(180,130,40,0.15), 0 4px 12px rgba(0,0,0,0.06)' }}
               loading="lazy"
             />
           </motion.div>
@@ -342,15 +395,12 @@ const Workflow = () => {
   );
 };
 
+/* ── Decks ──────────────────────────────────────── */
 const Decks = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const isMobile = useIsMobile();
 
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start end", "end start"],
-  });
-
+  const { scrollYProgress } = useScroll({ target: containerRef, offset: ["start end", "end start"] });
   const smoothProgress = useSpring(scrollYProgress, { stiffness: 100, damping: 30, restDelta: 0.001 });
 
   const yUp1 = useTransform(smoothProgress, [0, 1], [0, -300]);
@@ -372,23 +422,22 @@ const Decks = () => {
     "https://vibe.filesafe.space/1779696263388944422/attachments/f0408593-c5e9-4f2c-bf34-5ae210091de0.webp",
   ];
 
-  const allSlides = Array.from({ length: 25 }, (_, i) => baseImages[(i * 3) % baseImages.length]);
-  const mobileSlides = Array.from({ length: 15 }, (_, i) => baseImages[(i * 3) % baseImages.length]);
-
-  const slides = isMobile ? mobileSlides : allSlides;
   const colCount = isMobile ? 3 : 5;
+  const slideCount = isMobile ? 15 : 25;
+  const slides = Array.from({ length: slideCount }, (_, i) => baseImages[(i * 3) % baseImages.length]);
+  const cols = Array.from({ length: colCount }, (_, c) => slides.filter((_, idx) => idx % colCount === c));
+  const transforms = [yUp1, yDown1, yUp2, yDown2, yUp3].slice(0, colCount);
 
-  const cols = Array.from({ length: colCount }, (_, c) =>
-    slides.filter((_, idx) => idx % colCount === c)
-  );
-
-  const allTransforms = [yUp1, yDown1, yUp2, yDown2, yUp3];
-  const transforms = allTransforms.slice(0, colCount);
+  const sectionBg = `
+    radial-gradient(ellipse 700px 500px at 90% 30%, rgba(212,168,83,0.10) 0%, transparent 60%),
+    radial-gradient(ellipse 600px 400px at 10% 70%, rgba(67,206,214,0.08) 0%, transparent 60%),
+    linear-gradient(180deg, #FAF4EA 0%, #FEF9F2 100%)
+  `;
 
   return (
-    <section ref={containerRef} className="py-20 sm:py-32 bg-[#f9f9fb] overflow-hidden relative">
+    <section ref={containerRef} className="py-20 sm:py-32 overflow-hidden relative" style={{ background: sectionBg }}>
       <div className="max-w-3xl mx-auto px-4 sm:px-6 text-center mb-10 sm:mb-20 relative z-20">
-        <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black tracking-tighter text-foreground mb-5 md:mb-8 leading-[1.1]">
+        <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black tracking-tighter mb-5 md:mb-8 leading-[1.1] text-gradient">
           From concept to launch in no time
         </h2>
         <p className="text-base sm:text-lg md:text-xl text-foreground/60 leading-relaxed font-medium">
@@ -415,7 +464,8 @@ const Decks = () => {
                 key={j}
                 src={src}
                 alt={`Portfolio ${i}-${j}`}
-                className="w-full h-auto rounded-lg shadow-md"
+                className="w-full h-auto rounded-xl"
+                style={{ boxShadow: '0 4px 20px rgba(180,130,40,0.12)' }}
                 loading="lazy"
               />
             ))}
@@ -423,16 +473,22 @@ const Decks = () => {
         ))}
       </div>
 
-      <div className="absolute top-0 left-0 right-0 h-24 sm:h-32 bg-gradient-to-b from-[#f9f9fb] to-transparent z-20 pointer-events-none" />
-      <div className="absolute bottom-0 left-0 right-0 h-32 sm:h-40 bg-gradient-to-t from-[#f9f9fb] to-transparent z-20 pointer-events-none" />
+      <div className="absolute top-0 left-0 right-0 h-24 sm:h-32 pointer-events-none z-20"
+           style={{ background: `linear-gradient(to bottom, #FAF4EA, transparent)` }} />
+      <div className="absolute bottom-0 left-0 right-0 h-32 sm:h-40 pointer-events-none z-20"
+           style={{ background: `linear-gradient(to top, #FEF9F2, transparent)` }} />
     </section>
   );
 };
 
+/* ── Formatting ─────────────────────────────────── */
 const Formatting = () => {
   return (
-    <section className="py-20 sm:py-32 bg-white overflow-hidden">
-      <div className="max-w-[1400px] mx-auto px-4 sm:px-6">
+    <section className="py-20 sm:py-32 overflow-hidden relative" style={{ background: '#FEFAF5' }}>
+      <Orb color="rgba(232,168,152,0.12)" size="500px" className="top-0 right-0" />
+      <Orb color="rgba(212,168,83,0.08)" size="400px" className="bottom-0 -left-20" />
+
+      <div className="max-w-[1400px] mx-auto px-4 sm:px-6 relative z-10">
         <div className="grid md:grid-cols-2 gap-10 sm:gap-16 md:gap-20 items-center">
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
@@ -445,36 +501,45 @@ const Formatting = () => {
               <motion.div
                 animate={{ y: [0, -15, 0], rotate: [0, 5, 0] }}
                 transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-                className="absolute inset-0 bg-gradient-to-br from-primary/20 to-transparent rounded-full blur-3xl -z-10"
+                className="absolute inset-0 rounded-full blur-3xl -z-10"
+                style={{ background: 'radial-gradient(ellipse, rgba(212,168,83,0.22) 0%, transparent 70%)' }}
               />
               <div className="relative w-full h-full flex items-center justify-center">
                 <motion.div
                   animate={{ y: [0, -10, 0] }}
                   transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-                  className="relative z-20 w-52 sm:w-64 h-64 sm:h-80 bg-white rounded-2xl shadow-2xl border border-gray-100 p-5 sm:p-6 flex flex-col gap-4 will-change-transform"
+                  className="relative z-20 w-52 sm:w-64 h-64 sm:h-80 bg-white rounded-2xl p-5 sm:p-6 flex flex-col gap-4 will-change-transform"
+                  style={{
+                    border: '1px solid rgba(212,168,83,0.22)',
+                    boxShadow: '0 20px 60px rgba(180,130,40,0.14), 0 4px 12px rgba(0,0,0,0.05)',
+                  }}
                 >
                   <div className="flex gap-2">
                     <div className="w-8 h-8 rounded bg-primary/10 flex items-center justify-center"><Square className="w-4 h-4 text-primary" /></div>
-                    <div className="w-8 h-8 rounded bg-gray-100 flex items-center justify-center"><Circle className="w-4 h-4 text-gray-400" /></div>
-                    <div className="w-8 h-8 rounded bg-gray-100 flex items-center justify-center"><Type className="w-4 h-4 text-gray-400" /></div>
+                    <div className="w-8 h-8 rounded bg-gold-50 flex items-center justify-center"><Circle className="w-4 h-4 text-gold" /></div>
+                    <div className="w-8 h-8 rounded bg-blush-light/40 flex items-center justify-center"><Type className="w-4 h-4 text-blush-dark" /></div>
                   </div>
-                  <div className="w-full h-28 sm:h-32 bg-gray-50 rounded-xl border-2 border-dashed border-gray-200 flex items-center justify-center">
-                    <ImageIcon className="w-8 h-8 text-gray-300" />
+                  <div className="w-full h-28 sm:h-32 bg-cream-deep rounded-xl border-2 border-dashed border-gold/20 flex items-center justify-center">
+                    <ImageIcon className="w-8 h-8 text-gold/40" />
                   </div>
                   <div className="space-y-2 mt-auto">
-                    <div className="w-full h-3 bg-gray-100 rounded-full" />
-                    <div className="w-4/5 h-3 bg-gray-100 rounded-full" />
-                    <div className="w-2/3 h-3 bg-gray-100 rounded-full" />
+                    <div className="w-full h-3 rounded-full" style={{ background: 'linear-gradient(90deg, rgba(212,168,83,0.2) 0%, rgba(67,206,214,0.2) 100%)' }} />
+                    <div className="w-4/5 h-3 bg-cream-deep rounded-full" />
+                    <div className="w-2/3 h-3 bg-cream-deep rounded-full" />
                   </div>
                 </motion.div>
 
                 <motion.div
                   animate={{ x: [0, 20, 0], y: [0, -20, 0] }}
                   transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-                  className="absolute right-0 sm:-right-6 top-16 sm:top-20 z-30 bg-white p-2 sm:p-3 rounded-xl shadow-xl border border-gray-100 flex items-center gap-2 will-change-transform"
+                  className="absolute right-0 sm:-right-6 top-16 sm:top-20 z-30 bg-white p-2 sm:p-3 rounded-xl flex items-center gap-2 will-change-transform"
+                  style={{
+                    border: '1px solid rgba(212,168,83,0.25)',
+                    boxShadow: '0 8px 24px rgba(180,130,40,0.16)',
+                  }}
                 >
                   <div className="w-2 h-2 rounded-full bg-green-500 shrink-0" />
-                  <span className="text-[10px] sm:text-xs font-bold text-gray-600 whitespace-nowrap">Responsive layout applied</span>
+                  <span className="text-[10px] sm:text-xs font-bold text-gray-700 whitespace-nowrap">Responsive layout applied</span>
                 </motion.div>
               </div>
             </div>
@@ -487,8 +552,9 @@ const Formatting = () => {
             transition={{ duration: 0.6 }}
             className="max-w-lg order-1 md:order-2"
           >
-            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black tracking-tighter text-foreground mb-5 md:mb-8 leading-[1.1]">
-              Development that's effortless
+            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black tracking-tighter mb-5 md:mb-8 leading-[1.1]">
+              <span className="text-gradient">Development</span>
+              <span className="text-foreground"> that's effortless</span>
             </h2>
             <p className="text-base sm:text-lg md:text-xl text-foreground/60 leading-relaxed font-medium mb-5 sm:mb-6">
               You focus on your business — we'll take care of the code. Kool Vision's modern tech stack ensures your site is blazingly fast, secure, and easy to manage.
@@ -503,10 +569,14 @@ const Formatting = () => {
   );
 };
 
+/* ── Integrations ───────────────────────────────── */
 const Integrations = () => {
   return (
-    <section className="py-20 sm:py-32 bg-[#f9f9fb] overflow-hidden">
-      <div className="max-w-[1400px] mx-auto px-4 sm:px-6">
+    <section className="py-20 sm:py-32 overflow-hidden relative" style={{ background: '#FAF4EA' }}>
+      <Orb color="rgba(67,206,214,0.10)" size="500px" className="-top-10 -right-20" />
+      <Orb color="rgba(212,168,83,0.08)" size="350px" className="bottom-10 left-0" />
+
+      <div className="max-w-[1400px] mx-auto px-4 sm:px-6 relative z-10">
         <div className="grid md:grid-cols-2 gap-10 sm:gap-16 md:gap-20 items-center">
           <motion.div
             initial={{ opacity: 0, x: -20 }}
@@ -515,8 +585,9 @@ const Integrations = () => {
             transition={{ duration: 0.6 }}
             className="max-w-lg"
           >
-            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black tracking-tighter text-foreground mb-5 md:mb-8 leading-[1.1]">
-              Integrated with what matters
+            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black tracking-tighter mb-5 md:mb-8 leading-[1.1]">
+              <span className="text-gradient">Integrated</span>
+              <span className="text-foreground"> with what matters</span>
             </h2>
             <p className="text-base sm:text-lg md:text-xl text-foreground/60 leading-relaxed font-medium">
               Your website shouldn't live in a silo. We seamlessly integrate your site with the CRM, analytics, and marketing tools you rely on every day to turn visitors into loyal customers.
@@ -529,12 +600,16 @@ const Integrations = () => {
             transition={{ duration: 0.6 }}
             className="flex justify-center"
           >
-            <img
-              src="https://vibe.filesafe.space/1779696263388944422/assets/78d8ca95-b11a-489e-809f-483a4949b9b0.png"
-              alt="Integrations"
-              className="w-full max-w-xs sm:max-w-sm md:max-w-md object-cover rounded-2xl shadow-xl"
-              loading="lazy"
-            />
+            <div className="relative">
+              <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-gold/15 to-primary/10 blur-xl translate-y-4 scale-95" />
+              <img
+                src="https://vibe.filesafe.space/1779696263388944422/assets/78d8ca95-b11a-489e-809f-483a4949b9b0.png"
+                alt="Integrations"
+                className="relative w-full max-w-xs sm:max-w-sm md:max-w-md object-cover rounded-2xl"
+                style={{ boxShadow: '0 20px 60px rgba(180,130,40,0.15), 0 4px 12px rgba(0,0,0,0.06)', border: '1px solid rgba(212,168,83,0.15)' }}
+                loading="lazy"
+              />
+            </div>
           </motion.div>
         </div>
       </div>
@@ -542,12 +617,16 @@ const Integrations = () => {
   );
 };
 
+/* ── Sharing ────────────────────────────────────── */
 const Sharing = () => {
   return (
-    <section className="pt-20 sm:pt-32 pb-0 bg-white overflow-hidden text-center">
-      <div className="max-w-3xl mx-auto px-4 sm:px-6 mb-10 sm:mb-20">
-        <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black tracking-tighter text-foreground mb-5 md:mb-8 leading-[1.1]">
-          Websites that perform everywhere
+    <section className="pt-20 sm:pt-32 pb-0 overflow-hidden text-center relative" style={{ background: '#FEFAF5' }}>
+      <Orb color="rgba(212,168,83,0.10)" size="600px" className="top-0 left-1/2 -translate-x-1/2 -translate-y-1/2" />
+
+      <div className="max-w-3xl mx-auto px-4 sm:px-6 mb-10 sm:mb-20 relative z-10">
+        <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black tracking-tighter mb-5 md:mb-8 leading-[1.1]">
+          <span className="text-gradient">Websites</span>
+          <span className="text-foreground"> that perform everywhere</span>
         </h2>
         <p className="text-base sm:text-lg md:text-xl text-foreground/60 leading-relaxed font-medium">
           Over half of all web traffic comes from mobile devices. We ensure your site looks stunning and functions perfectly on desktops, tablets, and smartphones alike.
@@ -557,7 +636,8 @@ const Sharing = () => {
         <img
           src="https://vibe.filesafe.space/1779696263388944422/assets/80f2944a-f9d6-4eea-b9c7-1f3893bd1dc8.png"
           alt="Desktop preview"
-          className="w-full h-auto rounded-t-2xl sm:rounded-t-3xl shadow-2xl object-cover aspect-[16/9]"
+          className="w-full h-auto rounded-t-2xl sm:rounded-t-3xl object-cover aspect-[16/9]"
+          style={{ boxShadow: '0 -8px 60px rgba(180,130,40,0.12), 0 4px 20px rgba(0,0,0,0.08)' }}
           loading="lazy"
         />
         <motion.img
@@ -567,7 +647,8 @@ const Sharing = () => {
           transition={{ duration: 0.8 }}
           src="https://vibe.filesafe.space/1779696263388944422/assets/24ed9e93-f67c-472c-8b7c-360010aacd5d.png"
           alt="Mobile preview"
-          className="absolute -top-8 sm:-top-16 md:-top-28 right-2 sm:right-6 md:right-10 w-[18%] sm:w-1/4 max-w-[200px] sm:max-w-[250px] z-20 pointer-events-none rounded-xl sm:rounded-2xl shadow-2xl border-2 sm:border-4 border-white"
+          className="absolute -top-8 sm:-top-16 md:-top-28 right-2 sm:right-6 md:right-10 w-[18%] sm:w-1/4 max-w-[200px] sm:max-w-[250px] z-20 pointer-events-none rounded-xl sm:rounded-2xl border-2 sm:border-4 border-white"
+          style={{ boxShadow: '0 16px 40px rgba(180,130,40,0.20)' }}
           loading="lazy"
         />
         <motion.img
@@ -577,7 +658,8 @@ const Sharing = () => {
           transition={{ duration: 0.8, delay: 0.2 }}
           src="https://vibe.filesafe.space/1779696263388944422/assets/cdc2534b-6887-48da-bd98-fcebb3613ce8.png"
           alt="Tablet preview"
-          className="absolute bottom-6 sm:bottom-12 md:bottom-20 -left-2 sm:left-4 md:left-10 w-[28%] sm:w-1/3 max-w-[300px] sm:max-w-[350px] z-20 pointer-events-none shadow-2xl rounded-xl sm:rounded-2xl border-2 sm:border-4 border-white"
+          className="absolute bottom-6 sm:bottom-12 md:bottom-20 -left-2 sm:left-4 md:left-10 w-[28%] sm:w-1/3 max-w-[300px] sm:max-w-[350px] z-20 pointer-events-none rounded-xl sm:rounded-2xl border-2 sm:border-4 border-white"
+          style={{ boxShadow: '0 16px 40px rgba(67,206,214,0.18)' }}
           loading="lazy"
         />
       </div>
@@ -585,14 +667,16 @@ const Sharing = () => {
   );
 };
 
+/* ── News ───────────────────────────────────────── */
 const News = () => {
   return (
-    <section className="py-20 sm:py-32 bg-white">
+    <section className="py-20 sm:py-32" style={{ background: '#FAF4EA' }}>
       <div className="max-w-[1400px] mx-auto px-4 sm:px-6">
         <div className="grid md:grid-cols-2 gap-6 sm:gap-8">
-          <a href="#" className="group block bg-[#f9f9fb] rounded-2xl overflow-hidden border border-gray-100 hover:shadow-xl transition-shadow">
+
+          <a href="#" className="group block rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-300 glass-card">
             <div className="p-6 sm:p-8 md:p-12 pb-0">
-              <h3 className="text-2xl sm:text-3xl md:text-4xl font-black tracking-tighter text-foreground mb-5 sm:mb-8 group-hover:text-primary transition-colors">
+              <h3 className="text-2xl sm:text-3xl md:text-4xl font-black tracking-tighter text-foreground mb-5 sm:mb-8 group-hover:text-gradient transition-colors">
                 Local SEO Strategies for Middle TN Businesses
               </h3>
             </div>
@@ -604,31 +688,43 @@ const News = () => {
                 loading="lazy"
               />
             </div>
-            <div className="px-6 sm:px-8 md:px-12 pb-6 sm:pb-8 md:pb-12 flex items-center gap-2 text-primary font-bold">
-              Read more <span className="text-xl">→</span>
+            <div className="px-6 sm:px-8 md:px-12 pb-6 sm:pb-8 md:pb-12 flex items-center gap-2 font-bold text-gradient">
+              Read more <span className="text-xl group-hover:translate-x-1 transition-transform inline-block">→</span>
             </div>
           </a>
 
-          <a href="#" className="group block bg-primary rounded-2xl overflow-hidden hover:shadow-xl hover:shadow-primary/20 transition-shadow text-white flex flex-col justify-between">
-            <div className="p-6 sm:p-8 md:p-12">
-              <div className="text-xs font-bold uppercase tracking-widest mb-4 sm:mb-6 opacity-80">Web Design Trends</div>
+          <a
+            href="#"
+            className="group relative block rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-300 text-white flex flex-col justify-between"
+            style={{ background: 'linear-gradient(135deg, #0A2020 0%, #0D2828 40%, #163535 70%, #1A4040 100%)' }}
+          >
+            <div
+              className="absolute inset-0 rounded-2xl pointer-events-none"
+              style={{
+                background: 'radial-gradient(ellipse 400px 300px at 80% 20%, rgba(212,168,83,0.22) 0%, transparent 65%), radial-gradient(ellipse 300px 300px at 20% 80%, rgba(67,206,214,0.15) 0%, transparent 65%)',
+              }}
+            />
+            <div className="relative p-6 sm:p-8 md:p-12">
+              <div className="text-xs font-bold uppercase tracking-widest mb-4 sm:mb-6 text-gradient-gold">Web Design Trends</div>
               <h3 className="text-2xl sm:text-3xl md:text-4xl font-black tracking-tighter mb-5 sm:mb-8">
                 Why your business needs a modern website in 2024
               </h3>
-              <p className="text-base sm:text-lg md:text-xl opacity-80 leading-relaxed font-medium">
+              <p className="text-base sm:text-lg md:text-xl opacity-75 leading-relaxed font-medium">
                 A deep dive into how user expectations have changed and what you need to do to stay competitive online.
               </p>
             </div>
-            <div className="px-6 sm:px-8 md:px-12 pb-6 sm:pb-8 md:pb-12 flex items-center gap-2 font-bold">
-              Learn more <span className="text-xl group-hover:translate-x-2 transition-transform">→</span>
+            <div className="relative px-6 sm:px-8 md:px-12 pb-6 sm:pb-8 md:pb-12 flex items-center gap-2 font-bold text-gradient-gold">
+              Learn more <span className="text-xl group-hover:translate-x-2 transition-transform inline-block">→</span>
             </div>
           </a>
+
         </div>
       </div>
     </section>
   );
 };
 
+/* ── Testimonials ───────────────────────────────── */
 const Testimonials = () => {
   const testimonials = [
     {
@@ -652,12 +748,15 @@ const Testimonials = () => {
   ];
 
   return (
-    <section className="py-20 sm:py-32 bg-white">
-      <div className="max-w-[1400px] mx-auto px-4 sm:px-6">
-        <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black tracking-tighter text-center text-foreground mb-10 sm:mb-20">
-          What others are saying
+    <section className="py-20 sm:py-32 relative overflow-hidden" style={{ background: '#FEFAF5' }}>
+      <Orb color="rgba(212,168,83,0.09)" size="700px" className="top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" />
+
+      <div className="max-w-[1400px] mx-auto px-4 sm:px-6 relative z-10">
+        <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black tracking-tighter text-center mb-10 sm:mb-20">
+          <span className="text-gradient">What others</span>
+          <span className="text-foreground"> are saying</span>
         </h2>
-        <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-5 sm:gap-8">
+        <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-5 sm:gap-6 md:gap-8">
           {testimonials.map((t, i) => (
             <motion.div
               key={i}
@@ -665,13 +764,13 @@ const Testimonials = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: i * 0.1 }}
-              className="bg-white border border-gray-100 rounded-2xl p-6 sm:p-10 shadow-sm flex flex-col h-full hover:shadow-md transition-shadow"
+              className="glass-card rounded-2xl p-6 sm:p-10 flex flex-col h-full hover:shadow-lg transition-shadow"
             >
-              <p className="text-base sm:text-lg text-foreground/70 leading-relaxed flex-1 mb-8 sm:mb-10 font-medium">
-                {t.quote}
+              <p className="text-base sm:text-lg text-foreground/70 leading-relaxed flex-1 mb-8 sm:mb-10 font-medium italic">
+                "{t.quote}"
               </p>
               <div className="flex items-center gap-3 sm:gap-4">
-                <img src={t.image} alt={t.name} className="w-12 h-12 sm:w-14 sm:h-14 rounded-full object-cover shrink-0" loading="lazy" />
+                <img src={t.image} alt={t.name} className="w-12 h-12 sm:w-14 sm:h-14 rounded-full object-cover shrink-0 ring-2 ring-gold/20" loading="lazy" />
                 <div>
                   <h4 className="font-bold text-foreground text-base sm:text-lg">{t.name}</h4>
                   <p className="text-sm text-foreground/50 font-medium">{t.title}</p>
@@ -685,36 +784,52 @@ const Testimonials = () => {
   );
 };
 
+/* ── CTA ────────────────────────────────────────── */
 const CTA = () => {
   return (
-    <section className="py-20 sm:py-32 bg-primary text-white text-center">
-      <div className="max-w-3xl mx-auto px-4 sm:px-6">
+    <section
+      className="py-20 sm:py-32 text-white text-center relative overflow-hidden"
+      style={{ background: 'linear-gradient(135deg, #1A2B1A 0%, #0D2020 30%, #0A1C26 60%, #121A28 100%)' }}
+    >
+      {/* Luxury glow orbs */}
+      <div
+        className="absolute top-1/2 left-1/4 w-[500px] h-[500px] rounded-full blur-3xl pointer-events-none -translate-x-1/2 -translate-y-1/2"
+        style={{ background: 'rgba(212,168,83,0.18)' }}
+      />
+      <div
+        className="absolute top-1/2 right-1/4 w-[400px] h-[400px] rounded-full blur-3xl pointer-events-none translate-x-1/2 -translate-y-1/2"
+        style={{ background: 'rgba(67,206,214,0.12)' }}
+      />
+
+      <div className="max-w-3xl mx-auto px-4 sm:px-6 relative z-10">
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
         >
-          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black tracking-tighter mb-8 md:mb-12 leading-[1.1]">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black tracking-tighter mb-8 md:mb-12 leading-[1.1] text-gradient-gold">
             Ready to build your digital presence?
           </h2>
           <form className="flex flex-col sm:flex-row gap-2 max-w-md mx-auto mb-6" onSubmit={(e) => e.preventDefault()}>
             <Input
               type="email"
               placeholder="Your email"
-              className="h-12 sm:h-14 bg-white/10 border-white/20 text-white placeholder:text-white/50 focus-visible:ring-white shadow-none text-base w-full"
+              className="h-12 sm:h-14 text-white placeholder:text-white/50 focus-visible:ring-gold shadow-none text-base w-full"
+              style={{ background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(212,168,83,0.25)' }}
               required
             />
             <Button
               type="submit"
-              className="h-12 sm:h-14 px-8 sm:px-10 bg-white text-primary hover:bg-white/90 font-bold text-base w-full sm:w-auto shrink-0"
+              className="h-12 sm:h-14 px-8 sm:px-10 font-bold text-base w-full sm:w-auto shrink-0 text-foreground"
+              style={{ background: 'linear-gradient(135deg, #F0C878 0%, #D4A853 100%)', border: 'none', color: '#1A1A1A' }}
             >
               Sign up
             </Button>
           </form>
-          <p className="text-sm text-white/70 font-medium">
+          <p className="text-sm text-white/60 font-medium">
             We care about protecting your data. Here's our{" "}
-            <a href="#" className="underline hover:text-white transition-colors">Privacy Policy</a>.
+            <a href="#" className="underline hover:text-gold transition-colors">Privacy Policy</a>.
           </p>
         </motion.div>
       </div>
@@ -722,9 +837,10 @@ const CTA = () => {
   );
 };
 
+/* ── Footer ─────────────────────────────────────── */
 const Footer = () => {
   return (
-    <footer className="bg-white py-10 sm:py-16 md:py-20">
+    <footer className="py-10 sm:py-16 md:py-20 border-t border-gold/15" style={{ background: '#FAF4EA' }}>
       <div className="max-w-[1400px] mx-auto px-4 sm:px-6 grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-8 md:gap-12">
         <div className="col-span-2 lg:col-span-2">
           <a href="/" className="inline-block mb-5 sm:mb-6">
@@ -742,27 +858,27 @@ const Footer = () => {
         </div>
         <div>
           <h5 className="font-bold text-foreground mb-4 sm:mb-6">Company</h5>
-          <ul className="space-y-3 sm:space-y-4 text-sm text-foreground/60 font-medium">
-            <li><a href="#" className="hover:text-primary transition-colors">Home</a></li>
-            <li><a href="#" className="hover:text-primary transition-colors">Services</a></li>
-            <li><a href="#" className="hover:text-primary transition-colors">Portfolio</a></li>
-            <li><a href="#" className="hover:text-primary transition-colors">Blog</a></li>
-            <li><a href="#" className="hover:text-primary transition-colors">Contact</a></li>
+          <ul className="space-y-3 sm:space-y-4 text-sm text-foreground/55 font-medium">
+            <li><a href="#" className="hover:text-gold transition-colors">Home</a></li>
+            <li><a href="#" className="hover:text-gold transition-colors">Services</a></li>
+            <li><a href="#" className="hover:text-gold transition-colors">Portfolio</a></li>
+            <li><a href="#" className="hover:text-gold transition-colors">Blog</a></li>
+            <li><a href="#" className="hover:text-gold transition-colors">Contact</a></li>
           </ul>
         </div>
         <div>
           <h5 className="font-bold text-foreground mb-4 sm:mb-6">Legal</h5>
-          <ul className="space-y-3 sm:space-y-4 text-sm text-foreground/60 font-medium">
-            <li><a href="#" className="hover:text-primary transition-colors">Privacy Policy</a></li>
-            <li><a href="#" className="hover:text-primary transition-colors">Terms of Service</a></li>
+          <ul className="space-y-3 sm:space-y-4 text-sm text-foreground/55 font-medium">
+            <li><a href="#" className="hover:text-gold transition-colors">Privacy Policy</a></li>
+            <li><a href="#" className="hover:text-gold transition-colors">Terms of Service</a></li>
           </ul>
         </div>
         <div>
           <h5 className="font-bold text-foreground mb-4 sm:mb-6">Follow us</h5>
-          <ul className="space-y-3 sm:space-y-4 text-sm text-foreground/60 font-medium">
-            <li><a href="https://www.facebook.com/KoolVisionMedia" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors">Facebook</a></li>
-            <li><a href="https://www.instagram.com/kool_vision_media" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors">Instagram</a></li>
-            <li><a href="https://www.youtube.com/@KoolVisionMediaMarketing" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors">YouTube</a></li>
+          <ul className="space-y-3 sm:space-y-4 text-sm text-foreground/55 font-medium">
+            <li><a href="https://www.facebook.com/KoolVisionMedia" target="_blank" rel="noopener noreferrer" className="hover:text-gold transition-colors">Facebook</a></li>
+            <li><a href="https://www.instagram.com/kool_vision_media" target="_blank" rel="noopener noreferrer" className="hover:text-gold transition-colors">Instagram</a></li>
+            <li><a href="https://www.youtube.com/@KoolVisionMediaMarketing" target="_blank" rel="noopener noreferrer" className="hover:text-gold transition-colors">YouTube</a></li>
           </ul>
         </div>
       </div>
@@ -770,9 +886,10 @@ const Footer = () => {
   );
 };
 
+/* ── Page ───────────────────────────────────────── */
 export default function Index() {
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-cream">
       <Navbar />
       <Hero />
       <EarlyAccess />
